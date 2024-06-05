@@ -1,0 +1,7 @@
+DECLARE @expertId int
+SET @expertId = 693
+SELECT TOP 10000 content.id, Title, CONVERT(date, published_date) AS date, pub_type_name AS Type FROM content
+INNER JOIN content_related_authors ON content.id = content_related_authors.content_id
+INNER JOIN publication_types ON content.publication_type = publication_types.id
+WHERE CAST(published_date AS Date) > DATEADD(YEAR,-20,CAST(GETDATE() AS DATE)) AND content_related_authors.authors_id = @expertId
+ORDER BY published_date DESC

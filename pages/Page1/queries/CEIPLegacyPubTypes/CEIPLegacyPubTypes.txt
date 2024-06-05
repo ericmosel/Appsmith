@@ -1,0 +1,13 @@
+DECLARE @expertId int
+SET @expertId = 693
+
+SELECT * FROM (
+SELECT TOP 500  count(pub_type_name) AS y, pub_type_name AS x  FROM content
+INNER JOIN content_related_authors ON content.id = content_related_authors.content_id
+INNER JOIN publication_types ON content.publication_type = publication_types.id
+
+GROUP BY pub_type_name, content_related_authors.authors_id
+HAVING content_related_authors.authors_id = @expertId
+ORDER BY count(*) DESC
+) AS subq
+/* WHERE (y * 0.10) > 0.33 */

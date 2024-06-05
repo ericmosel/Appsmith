@@ -1,0 +1,11 @@
+DECLARE @expertId int
+SET @expertId = 693
+
+SELECT TOP 1000 count(*) AS y , YEAR(CONVERT(NVARCHAR(30), published_date,23)) AS x FROM (
+SELECT TOP 10000 Title,  published_date, pub_type_name, authors_id  FROM content
+INNER JOIN content_related_authors ON content.id = content_related_authors.content_id
+INNER JOIN publication_types ON content.publication_type = publication_types.id
+WHERE CAST(published_date AS Date) > DATEADD(YEAR,-20,CAST(GETDATE() AS DATE)) AND content_related_authors.authors_id = @expertId
+) AS data
+GROUP BY YEAR(CONVERT(NVARCHAR(30), published_date,23))
+ORDER BY YEAR(CONVERT(NVARCHAR(30), published_date,23)) DESC
